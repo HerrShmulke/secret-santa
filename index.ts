@@ -4,6 +4,7 @@ import { registerAuthRoutes } from './src/auth-router';
 import { registerGiftRoutes } from './src/gift-router';
 import { registerProfileRoutes } from './src/profile-router';
 import cors from '@fastify/cors'
+import { Settings } from './config/settings';
 
 async function main() {
   await initTables();
@@ -25,7 +26,7 @@ async function main() {
   registerGiftRoutes(fastifyInstance);
   registerProfileRoutes(fastifyInstance);
 
-  await fastifyInstance.listen({ port: 1010 });
+  await fastifyInstance.listen({ port: Settings.getServerPort() });
 }
 
 main();

@@ -13,4 +13,8 @@ export class Settings {
   static getMailPassword(): string {
     return process.env.MAIL_PASSWORD ?? '';
   }
+
+  static getServerPort(): number {
+    return Number(process.env.SERVER_PORT) ?? 443;
+  }
 }
