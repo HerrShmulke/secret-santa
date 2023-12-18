@@ -15,6 +15,6 @@ export class Settings {
   }
 
   static getServerPort(): number {
-    return Number(process.env.SERVER_PORT) ?? 443;
+    return Number(process.env.SERVER_PORT) ?? 8080;
   }
 }
