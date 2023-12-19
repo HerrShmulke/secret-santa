@@ -26,7 +26,12 @@ async function main() {
   registerGiftRoutes(fastifyInstance);
   registerProfileRoutes(fastifyInstance);
 
+  fastifyInstance.addHook('onRequest', (req) => {
+    console.dir(req)
+  })
+
   await fastifyInstance.listen({ port: Settings.getServerPort() });
+
 }
 
 main();
