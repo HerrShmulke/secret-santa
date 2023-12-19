@@ -26,7 +26,7 @@ async function main() {
   registerGiftRoutes(fastifyInstance);
   registerProfileRoutes(fastifyInstance);
 
-  fastifyInstance.addHook('onRequest', (req) => {
+  fastifyInstance.addHook('onError', (req) => {
     console.dir(req)
   })
 
