@@ -26,12 +26,7 @@ async function main() {
   registerGiftRoutes(fastifyInstance);
   registerProfileRoutes(fastifyInstance);
 
-  fastifyInstance.addHook('onError', (req, reply) => {
-    console.dir(req)
-    reply.status(500).send()
-  })
-
-  fastifyInstance.get('/api', (req, res) => {
+  fastifyInstance.get('/api/', (req, res) => {
     res.send('test');
   })
 
