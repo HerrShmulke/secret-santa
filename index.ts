@@ -30,7 +30,9 @@ async function main() {
     console.dir(req)
   })
 
-  await fastifyInstance.listen({ port: Settings.getServerPort() });
+  await fastifyInstance.listen({ port: Settings.getServerPort() }, () => {
+    console.log('Server start on port ' + Settings.getServerPort());
+  });
 
 }
 
