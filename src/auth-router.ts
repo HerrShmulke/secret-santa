@@ -32,7 +32,7 @@ export function registerAuthRoutes(fastifyInstance: FastifyInstance) {
   
   fastifyInstance.post<{
     Body: Body
-  }>('/auth/login', { schema: {
+  }>('/api/auth/login', { schema: {
     body: bodyJsonSchema
   } }, async (request, reply) => {
     try {
@@ -82,7 +82,7 @@ export function registerAuthRoutes(fastifyInstance: FastifyInstance) {
 
   fastifyInstance.post<{
     Body: VerifyBody
-  }>('/auth/verify', { schema: {
+  }>('/api/auth/verify', { schema: {
     body: verifyBodyJsonSchema
   } }, async (request, reply) => {
     try {

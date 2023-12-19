@@ -11,7 +11,7 @@ export function registerGiftRoutes(fastifyInstance: FastifyInstance) {
 
   fastifyInstance.get<{
     Headers: AuthSchemaHeaders
-  }>('/gift', {
+  }>('/api/gift', {
     preValidation: authGuard
   }, async (request, reply) => {
     const { bearer } = request.headers;
@@ -36,7 +36,7 @@ export function registerGiftRoutes(fastifyInstance: FastifyInstance) {
   fastifyInstance.post<{ 
     Body: GiftCreateSchemaBody,
     Headers: AuthSchemaHeaders 
-  }>('/gift', { 
+  }>('/api/gift', { 
     preValidation: authGuard, 
     schema: { body: giftCreateSchemaBody } 
   }, async (request, reply) => {

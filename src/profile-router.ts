@@ -14,7 +14,7 @@ export function registerProfileRoutes(fastifyInstance: FastifyInstance) {
   
   fastifyInstance.patch<{
     Body: ProfilePatchBodyJsonSchema
-  }>('/profile', { preValidation: authGuard, schema: { body: profilePatchBodyJsonSchema } }, async (request, reply) => {
+  }>('/api/profile', { preValidation: authGuard, schema: { body: profilePatchBodyJsonSchema } }, async (request, reply) => {
     try {
       const { bearer } = request.headers;
       const { name } = request.body;
@@ -29,7 +29,7 @@ export function registerProfileRoutes(fastifyInstance: FastifyInstance) {
     }
   });
 
-  fastifyInstance.get('/profile', { preValidation: authGuard }, async (request, reply) => {
+  fastifyInstance.get('/api/profile', { preValidation: authGuard }, async (request, reply) => {
     try {
       const { bearer } = request.headers;
       const { personId } = jwt.decode(bearer as string) as { personId: number };
