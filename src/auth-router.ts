@@ -36,6 +36,7 @@ export function registerAuthRoutes(fastifyInstance: FastifyInstance) {
     body: bodyJsonSchema
   } }, async (request, reply) => {
     try {
+      console.log('1');
       const person = await getPersonByEmail(request.body.email);
       const isPersonFound = person !== undefined;
 
@@ -43,24 +44,28 @@ export function registerAuthRoutes(fastifyInstance: FastifyInstance) {
       
       if (!isPersonFound) {
         const [ newPerson ] = await createPerson(request.body.email);
-
+        console.log('2');
         personId = newPerson;
       } else {
+        console.log('3');
         personId = person.id;
       }
       
       if (personId !== null) {
-
+        console.log('4');
         const oneTimeCode = generateOneTimeCode();
         await createOneTimeCode(personId, oneTimeCode, new Date(Date.now() + 60_000 * 60));
-        
-        reply.code(200);
+      
+        console.log('5');
+
         await transporter.sendMail({
           from: Settings.getMailUser(),
           to: request.body.email,
           text: `Ваш код авторизации: ${oneTimeCode}`
-        })
-        return { success: true };
+        });
+
+        console.log('6');
+        return reply.status(200).send({ success: true });
       }
       
       console.log('person id is undefined');
