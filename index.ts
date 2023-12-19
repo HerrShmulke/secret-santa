@@ -31,6 +31,10 @@ async function main() {
     reply.status(500).send()
   })
 
+  fastifyInstance.get('/api', (req, res) => {
+    res.send('test');
+  })
+
   await fastifyInstance.listen({ port: Settings.getServerPort() }, () => {
     console.log('Server start on port ' + Settings.getServerPort());
   });
