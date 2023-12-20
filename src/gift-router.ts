@@ -78,7 +78,9 @@ export function registerGiftRoutes(fastifyInstance: FastifyInstance) {
   
       const persons = await getAllPersons();
   
-      const personIds = persons.map((person) => person.id);
+      const filteredPersons = persons.filter((person) => person.gift !== undefined && person.gift !== null && person.gift !== '');
+
+      const personIds = filteredPersons.map((person) => person.id);
   
       const shufflePersonIds = shuffle(personIds);
   
