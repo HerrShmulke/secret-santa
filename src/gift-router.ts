@@ -2,7 +2,9 @@ import { FastifyInstance } from "fastify";
 import S from 'fluent-json-schema';
 import { authGuard } from './auth-guard';
 import jwt from 'jsonwebtoken';
-import { getPersonById, updatePersonById } from "./persons";
+import { getAllPersons, getPersonById, updatePersonById } from "./persons";
+import { shuffle } from "./utils/list";
+import { setPairings } from "./pairings";
 
 export function registerGiftRoutes(fastifyInstance: FastifyInstance) {
   type AuthSchemaHeaders = {
@@ -54,4 +56,42 @@ export function registerGiftRoutes(fastifyInstance: FastifyInstance) {
       reply.status(500).send({ message: 'Server error' });
     }
   });
+
+  type GiftCreatePairsQuery = {
+    password: string;
+  }
+
+  type Pair = {
+    santaId: number;
+    recipientId: number;
+  }
+
+  fastifyInstance.get<{
+    Querystring: GiftCreatePairsQuery
+  }>('/gift/create-pairs', async (request, reply) => {
+    try {
+      const { password } = request.query;
+  
+      if (password !== 'secret-leha') {
+        reply.status(500).send({ message: 'Server error' });
+      }
+  
+      const persons = await getAllPersons();
+  
+      const personIds = persons.map((person) => person.id);
+  
+      const shufflePersonIds = shuffle(personIds);
+  
+      const pairs: Pair[] = shufflePersonIds.reduce((pairs, personId, index, array) => {
+        return [...pairs, { santaId: personId, recipientId: array[(index + 1) % array.length] }]
+      }, [] as Pair[]);
+  
+      await setPairings(pairs);
+
+      reply.status(200).send({ success: true });
+    } catch (e) {
+      console.log(e)
+      reply.status(500).send({ message: 'Server error' });
+    }
+  })
 }

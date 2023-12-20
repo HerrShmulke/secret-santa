@@ -10,23 +10,18 @@ async function main() {
   await initTables();
 
   // fastifyInstance.register(cors, {
-  //   origin: (origin, cb) => {
-  //     const hostname = new URL(origin as string).hostname
-  //     if(hostname === "localhost"){
-  //       //  Request from localhost will pass
-  //       cb(null, true)
-  //       return
-  //     }
-  //     // Generate an error on other origins, disabling access
-  //     cb(new Error("Not allowed"), false)
-  //   }
+  //   origin: '*',
+  //   allowedHeaders: ['Origin', 'X-Requested-With', 'Accept', 'Content-Type', 'Authorization', 'Bearer'],
+  //   methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE']
   // })
 
   registerAuthRoutes(fastifyInstance);
   registerGiftRoutes(fastifyInstance);
   registerProfileRoutes(fastifyInstance);
 
-  await fastifyInstance.listen({ port: Settings.getServerPort() });
+  await fastifyInstance.listen({ port: Settings.getServerPort() }, () => {
+    console.log(`!!Server start on port: ${Settings.getServerPort()}`);
+  });
 }
 
 main();

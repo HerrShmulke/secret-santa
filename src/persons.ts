@@ -15,6 +15,10 @@ export function createPerson(
   return knexInstance.insert({ id, name, email }).into('persons');
 }
 
+export function getAllPersons(): Promise<Person[]> {
+  return knexInstance<Person>('persons').select();
+}
+
 export function getPersonById(id: number): Promise<Person | undefined> {
   return knexInstance<Person>('persons').where({ id }).first();
 }
