@@ -62,6 +62,8 @@ export function registerAuthRoutes(fastifyInstance: FastifyInstance) {
           from: Settings.getMailUser(),
           to: request.body.email,
           text: `Ваш код авторизации: ${oneTimeCode}`
+        }).then(() => {
+          console.log('Письмо отправлено по адресу: ' + request.body.email + ' код авторизации: ' + oneTimeCode);
         }).catch((e) => {
           console.log('Send mail error', e);
         });
