@@ -16,6 +16,16 @@ export function registerAuthRoutes(fastifyInstance: FastifyInstance) {
   type Body = {
     email: string
   }
+  
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.mail.ru',
+    port: 465,
+    secure: true,
+    auth: {
+      user: Settings.getMailUser(),
+      pass: Settings.getMailPassword()
+    }
+  });
 
   const bodyJsonSchema = S.object()
   .prop('email', S.string().required());
@@ -48,24 +58,12 @@ export function registerAuthRoutes(fastifyInstance: FastifyInstance) {
       
         console.log('5');
 
-        const transporter = nodemailer.createTransport({
-          host: 'smtp.mail.ru',
-          port: 465,
-          secure: true,
-          auth: {
-            user: Settings.getMailUser(),
-            pass: Settings.getMailPassword()
-          }
-        });
-
-        console.log(Settings.getMailUser());
-        
         transporter.sendMail({
           from: Settings.getMailUser(),
           to: request.body.email,
           text: `Ваш код авторизации: ${oneTimeCode}`
-        }).then(() => {
-          console.log('7')
+        }).catch((e) => {
+          console.log('Send mail error', e);
         });
 
         console.log('6');
