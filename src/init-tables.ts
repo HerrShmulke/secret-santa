@@ -1,20 +1,9 @@
 import { knexInstance } from './configurations/knex';
 
 export async function initTables() {
-  const hasPersons = await knexInstance.schema.hasTable('persons');
   const hasWishes = await knexInstance.schema.hasTable('gifts');
   const hasOneTimeCodes = await knexInstance.schema.hasTable('one_time_codes');
   const hasPairings = await knexInstance.schema.hasTable('pairings');
-  
-  if (!hasPersons) {
-    await knexInstance.schema.createTable('persons', (table) => {
-      table.increments('id').unique().primary();
-      table.string('name');
-      table.string('email').notNullable().unique();
-      table.text('gift');
-      table.timestamps(true, true);
-    });
-  }
 
   if (!hasWishes) {
     await knexInstance.schema.createTable('gifts', (table) => {
