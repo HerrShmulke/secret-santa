@@ -1,4 +1,4 @@
-import { knexInstance } from '../config/knex';
+import { knexInstance } from './configurations/knex';
 
 interface Person {
   id: number;

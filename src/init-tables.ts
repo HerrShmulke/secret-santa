@@ -1,4 +1,4 @@
-import { knexInstance } from '../config/knex';
+import { knexInstance } from './configurations/knex';
 
 export async function initTables() {
   const hasPersons = await knexInstance.schema.hasTable('persons');
