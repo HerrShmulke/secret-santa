@@ -1,0 +1,47 @@
+import { inject } from "inversify";
+import { GLOBAL_TYPES } from "../../constants/global-types";
+import { Knex } from "knex";
+
+export interface IReader<T> {
+  find(item: Partial<T>): Promise<T[]>;
+  findOne(item: Partial<T>): Promise<T | undefined>;
+}
+
+export interface IWriter<TResponse> {
+  create(item: Omit<TResponse, 'id'>): Promise<TResponse>;
+  update(id: number, item: Partial<TResponse>): Promise<TResponse>;
+  delete(id: number): Promise<boolean>;
+}
+
+export type IBaseRepository<TResponse> = IReader<TResponse> & IWriter<TResponse>;
+
+interface IEntityWithId {
+  id: number;
+};
+
+export abstract class BaseRepository<TResponse extends IEntityWithId> implements IBaseRepository<TResponse> {
+  constructor(
+    private tableName: string,
+    private knex: Knex
+  ) {}
+
+  find(item: Partial<TResponse>): Promise<TResponse[]> {
+    return this.knex(this.tableName).where(item);
+  }
+
+  findOne(item: Partial<TResponse>): Promise<TResponse | undefined> {
+    return this.knex(this.tableName).where(item).first();
+  }
+
+  create(item: Omit<TResponse, "id">): Promise<TResponse> {
+    return this.knex(this.tableName).insert(item) as Promise<TResponse>;
+  }
+
+  update(id: number, item: Partial<TResponse>): Promise<TResponse> {
+    return this.knex(this.tableName).where({ id }).update(item) as Promise<TResponse>;
+  }
+
+  delete(id: number): Promise<boolean> {
+    return this.knex(this.tableName).where({ id }).delete();
+  }
+}
