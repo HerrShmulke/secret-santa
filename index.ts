@@ -1,5 +1,5 @@
 import { initTables } from './src/init-tables';
-import { fastifyInstance } from './config/fastify';
+import { fastifyInstance } from './src/configurations/fastify';
 import { registerAuthRoutes } from './src/auth-router';
 import { registerGiftRoutes } from './src/gift-router';
 import { registerProfileRoutes } from './src/profile-router';
