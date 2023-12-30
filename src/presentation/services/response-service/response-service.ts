@@ -1,13 +1,5 @@
 import { FastifyReply } from 'fastify'
-
-export interface IResponseService {
-  ok<T>(data: T): void;
-  created<T>(data: T): void;
-  badRequest<T>(data: T): void;
-  unauthorized(): void;
-  notFound(): void;
-  internalServerError(): void;
-}
+import { IResponseService } from './response-service.interfaces';
 
 export class ResponseService implements IResponseService {
   constructor(private readonly fastifyReply: FastifyReply) {}
@@ -35,5 +27,4 @@ export class ResponseService implements IResponseService {
   internalServerError(): void {
     this.fastifyReply.status(500).send({ message: 'Internal server error' });
   }
-
 }
