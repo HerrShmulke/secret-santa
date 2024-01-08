@@ -1,4 +1,5 @@
 import fastify from "fastify";
+import { resolve } from 'path'
 
 export const fastifyInstance = fastify();
 
