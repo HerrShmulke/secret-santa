@@ -1,12 +1,18 @@
 import { initTables } from './src/init-tables';
 import { fastifyInstance } from './src/configurations/fastify';
-import { registerAuthRoutes } from './src/auth-router';
 import { registerGiftRoutes } from './src/gift-router';
 import { registerProfileRoutes } from './src/profile-router';
 import cors from '@fastify/cors'
 import { Settings } from './config/settings';
+import { containter } from './src/configurations/inversify';
+import { INFRASTRUCTURE_TYPES } from './src/infrastructure/constants/infrastructure-types';
+import { IRouterConfiguration } from './src/domain/configurations/router-configuration';
 
 async function main() {
+  const fastifyConfiguration = containter.get<IRouterConfiguration>(INFRASTRUCTURE_TYPES.FASTIFY_CONFIGURATION);
+
+  fastifyConfiguration.setupRoutes();
+
   await initTables();
 
   // fastifyInstance.register(cors, {
@@ -15,7 +21,6 @@ async function main() {
   //   methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE']
   // })
 
-  registerAuthRoutes(fastifyInstance);
   registerGiftRoutes(fastifyInstance);
   registerProfileRoutes(fastifyInstance);
 

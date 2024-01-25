@@ -1,8 +1,11 @@
 import 'reflect-metadata';
-import { Container } from 'inversify';
-import { GLOBAL_TYPES } from '../constants/global-types';
-import { fastifyInstance } from './fastify';
+import { Container, interfaces } from 'inversify';
+import { bindInfrastructureContainer } from '../infrastructure/configurations/container';
 
 export const containter = new Container();
 
-containter.bind(GLOBAL_TYPES.FASTIFY).toConstantValue(fastifyInstance);
+function bind<T>(serviceIdentifier: interfaces.ServiceIdentifier<T>) {
+  return containter.bind(serviceIdentifier)
+}
+
+bindInfrastructureContainer(bind);
